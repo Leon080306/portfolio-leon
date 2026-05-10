@@ -50,7 +50,7 @@ export default function Navbar() {
         transition: "all .4s ease",
       }}>
         <span className="df" style={{ fontSize: 20, fontWeight: 600, color: "#1A1A1A", letterSpacing: "-.02em" }}>
-          Leonard Samuel
+          Leonard Samuel Setiawan
         </span>
 
         {/* Desktop links */}
