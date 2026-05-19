@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, createContext, useContext } from "react";
 import { ArrowRight, MapPin, Mail, MessageCircle } from "lucide-react";
 import { useBreakpoint } from "../hooks/useBreakpoint";
 
-// ─── Brand icons (not in lucide) ─────────────────────────────────────────────
+// ─── Brand icons ──────────────────────────────────────────────────────────────
 const IconGithub = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
@@ -19,10 +19,38 @@ const IconInstagram = () => (
   </svg>
 );
 
-// ─── Breakpoint context (one listener for the whole page) ─────────────────────
+// ─── Breakpoint context ───────────────────────────────────────────────────────
 interface BP { isMobile: boolean; isTablet: boolean; }
 const BPCtx = createContext<BP>({ isMobile: false, isTablet: false });
 const useBP = () => useContext(BPCtx);
+
+// ─── Screen placeholder ───────────────────────────────────────────────────────
+// When your screenshots are ready, replace this component inside any device
+// frame with:  <img src="/your-screenshot.png" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
+function ScreenPlaceholder({ label, dark = false }: { label: string; dark?: boolean }) {
+  return (
+    <div style={{
+      width: "100%", height: "100%",
+      background: dark ? "#1C2320" : "#EDF2ED",
+      display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center", gap: 8,
+    }}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke={dark ? "#3A5C3A" : "#9AB49B"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <polyline points="21 15 16 10 5 21" />
+      </svg>
+      <span style={{
+        fontFamily: "'Sora', sans-serif", fontSize: 10, fontWeight: 500,
+        letterSpacing: ".09em", textTransform: "uppercase",
+        color: dark ? "#3A5C3A" : "#9AB49B",
+      }}>
+        {label}
+      </span>
+    </div>
+  );
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const Divider = () => (
@@ -42,13 +70,12 @@ function useScrollReveal() {
   }, []);
 }
 
-// Responsive section padding helper
 function sp(isTablet: boolean, isMobile: boolean) {
   if (isMobile) return "60px 20px";
   if (isTablet) return "80px 32px";
   return "120px 56px";
 }
-function spv(isTablet: boolean, isMobile: boolean) {  // vertical-only (full-width sections)
+function spv(isTablet: boolean, isMobile: boolean) {
   if (isMobile) return "60px 0";
   if (isTablet) return "80px 0";
   return "120px 0";
@@ -57,72 +84,214 @@ function innerPad(isMobile: boolean) {
   return isMobile ? "0 20px" : "0 56px";
 }
 
-// ─── Hero Mockups (desktop only) ─────────────────────────────────────────────
+// ─── Hero Mockups — desktop composition ──────────────────────────────────────
+// Layout: large landscape "desktop" screen (back) + phone (front-left) + SRS card (bottom-right)
 function HeroMockups({ mx, my }: { mx: number; my: number }) {
-  const t = (d: number) => `translate(${(mx - 0.5) * 22 * d}px,${(my - 0.5) * 13 * d}px)`;
+  const t = (d: number) =>
+    `translate(${(mx - 0.5) * 16 * d}px, ${(my - 0.5) * 9 * d}px)`;
 
   return (
-    <div style={{ position: "relative", height: 520, width: "100%" }}>
-      {/* Analytics */}
-      <div className="mc" style={{ position: "absolute", top: 16, left: 0, width: 320, background: "#1E2420", padding: 22, transform: `${t(.55)} rotate(-2.5deg)`, transition: "transform .5s ease" }}>
-        <div style={{ color: "#7A8C7B", fontSize: 10.5, fontWeight: 500, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 12 }}>Learning Analytics</div>
-        <div style={{ display: "flex", gap: 7, marginBottom: 16, alignItems: "flex-end", height: 70 }}>
-          {[65, 82, 71, 90, 78, 88, 100].map((h, i) => (
-            <div key={i} style={{ flex: 1, height: `${h}%`, background: i === 6 ? "#7A8C7B" : "rgba(122,140,123,.4)", borderRadius: "4px 4px 0 0" }} />
-          ))}
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div><div style={{ color: "#FAFAF7", fontSize: 22, fontWeight: 600 }}>2,847</div><div style={{ color: "#707070", fontSize: 11 }}>cards reviewed</div></div>
-          <div style={{ textAlign: "right" }}><div style={{ color: "#7A8C7B", fontSize: 22, fontWeight: 600 }}>94%</div><div style={{ color: "#707070", fontSize: 11 }}>retention rate</div></div>
-        </div>
-      </div>
+    <div style={{ position: "relative", height: 540, width: "100%" }}>
 
-      {/* Flashcard */}
-      <div className="mc" style={{ position: "absolute", top: 90, left: 90, width: 220, background: "white", border: "1px solid #EDEDEA", transform: `${t(1)} rotate(1.8deg)`, transition: "transform .5s ease", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 7, padding: "28px 20px" }}>
-        <div style={{ fontSize: 10.5, color: "#7A8C7B", letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 500 }}>Flashcard</div>
-        <div className="df" style={{ fontSize: 56, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>学</div>
-        <div style={{ fontSize: 13, color: "#707070" }}>xué</div>
-        <div style={{ fontSize: 15, color: "#1A1A1A", fontWeight: 500 }}>to study / to learn</div>
-        <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
-          <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#FEE2E2", display: "flex", alignItems: "center", justifyContent: "center", color: "#DC2626" }}>✕</div>
-          <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#DCFCE7", display: "flex", alignItems: "center", justifyContent: "center", color: "#16A34A" }}>✓</div>
-        </div>
-      </div>
+      {/* Sage decorative blob */}
+      <div style={{
+        position: "absolute", right: -80, top: "50%",
+        transform: "translateY(-50%)",
+        width: 460, height: 460, borderRadius: "50%",
+        background: "rgba(122,140,123,.11)",
+        pointerEvents: "none", zIndex: 0,
+      }} />
 
-      {/* System Design */}
-      <div className="mc" style={{ position: "absolute", top: 16, right: 0, width: 196, background: "linear-gradient(145deg,#F5F8F5,#EAF0EA)", border: "1px solid #D4DDD4", transform: `${t(.75)} rotate(1deg)`, transition: "transform .5s ease", padding: 16 }}>
-        <div style={{ fontSize: 10.5, color: "#7A8C7B", letterSpacing: ".06em", textTransform: "uppercase", fontWeight: 500, marginBottom: 12 }}>System Design</div>
-        {["React Frontend", "Express API", "PostgreSQL DB", "Kubernetes"].map((l, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: i < 3 ? "#7A8C7B" : "#9AB49B", flexShrink: 0 }} />
-            <span style={{ fontSize: 11.5, color: "#555" }}>{l}</span>
+      {/* ── Large landscape desktop / monitor frame ── */}
+      <div style={{
+        position: "absolute",
+        top: 30, right: -30,
+        zIndex: 2, width: 570, height: 300,
+        transform: `${t(0.5)} rotate(1.5deg) translateZ(0)`,  // ← force GPU layer
+        transition: "transform .55s ease",
+        willChange: "transform",                               // ← keep on GPU
+      }}>
+        <div style={{
+          width: "100%", height: "100%",
+          background: "#161616",
+          borderRadius: 12,
+          padding: "7px 7px 26px",
+          boxShadow: "0 40px 100px rgba(0,0,0,.3), 0 10px 28px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.07)",
+          position: "relative",
+          isolation: "isolate",                                // ← own stacking context
+        }}>
+          <div style={{
+            position: "absolute", top: 4, left: "50%",
+            transform: "translateX(-50%)",
+            width: 5, height: 5, borderRadius: "50%",
+            background: "#2A2A2A",
+          }} />
+          <div style={{
+            width: "100%", height: "100%",
+            borderRadius: 7, overflow: "hidden",
+            WebkitMaskImage: "-webkit-radial-gradient(white, black)", // ← Safari overflow fix
+          }}>
+            <img
+              src="/crg-admin-dashboard.png"
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left", display: "block" }}
+            />
           </div>
-        ))}
+          <div style={{
+            position: "absolute", bottom: 9, left: "50%",
+            transform: "translateX(-50%)",
+            width: 44, height: 3, borderRadius: 2,
+            background: "#2C2C2C",
+          }} />
+        </div>
+        <div style={{
+          position: "absolute", bottom: -18, left: "50%",
+          transform: "translateX(-50%)",
+          width: 40, height: 18, background: "#1C1C1C",
+          clipPath: "polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)",
+        }} />
+        <div style={{
+          position: "absolute", bottom: -24, left: "50%",
+          transform: "translateX(-50%)",
+          width: 90, height: 6, borderRadius: 3, background: "#1C1C1C",
+        }} />
       </div>
 
-      {/* SRS streak */}
-      <div className="mc" style={{ position: "absolute", bottom: 60, right: 20, width: 184, background: "white", border: "1px solid #EDEDEA", transform: `${t(1.1)} rotate(-1.2deg)`, transition: "transform .5s ease", padding: 16 }}>
-        <div style={{ fontSize: 10.5, color: "#9AA89B", fontWeight: 500, marginBottom: 10 }}>SRS Progress</div>
-        <div style={{ display: "flex", gap: 4, marginBottom: 9, alignItems: "flex-end", height: 28 }}>
-          {[100, 85, 92, 78, 95, 88, 100].map((h, i) => (
-            <div key={i} style={{ flex: 1, height: `${h}%`, background: i === 6 ? "#7A8C7B" : `rgba(122,140,123,${.3 + h / 400})`, borderRadius: 3 }} />
-          ))}
+      {/* ── Phone frame ── */}
+      <div style={{
+        position: "absolute",
+        left: 10, bottom: 10,
+        zIndex: 3, width: 185, height: 410,
+        transform: `${t(1.0)} rotate(-2.5deg) translateZ(0)`,
+        transition: "transform .55s ease",
+        willChange: "transform",
+      }}>
+        <div style={{
+          width: "100%", height: "100%",
+          background: "#161616",
+          borderRadius: 14,                               // ← your value
+          padding: "4px 4px 4px",
+          boxShadow:
+            "0 28px 72px rgba(0,0,0,.32), 0 8px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.07)",
+          position: "relative",
+          isolation: "isolate",
+        }}>
+          {/* Dynamic island */}
+          <div style={{
+            position: "absolute", top: 6, left: "50%",
+            transform: "translateX(-50%)",
+            width: 64, height: 19, borderRadius: 10,
+            background: "#000", zIndex: 1,
+          }} />
+          {/* Screen */}
+          <div style={{
+            width: "100%", height: "100%",
+            borderRadius: 10,                             // ← 14 (outer) − 4 (padding) = 10
+            overflow: "hidden",
+            WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+          }}>
+            <img
+              src="/crg-card-swipe.jpeg"
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
+            />
+          </div>
+          {/* Home bar */}
+          <div style={{
+            position: "absolute", bottom: 5, left: "50%",
+            transform: "translateX(-50%)",
+            width: 52, height: 3, borderRadius: 2,
+            background: "#444",
+          }} />
         </div>
-        <div style={{ fontSize: 24, fontWeight: 700, color: "#1A1A1A" }}>Day 47 <span style={{ fontSize: 11, color: "#7A8C7B", fontWeight: 400 }}>streak</span></div>
       </div>
 
-      {/* Glass pill */}
-      <div style={{ position: "absolute", bottom: 30, left: 20, width: 210, background: "rgba(250,250,247,.72)", backdropFilter: "blur(18px)", borderRadius: 18, border: "1px solid rgba(255,255,255,.8)", boxShadow: "0 4px 24px rgba(0,0,0,.06)", transform: t(.85), transition: "transform .5s ease", padding: "12px 16px", display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg,#7A8C7B,#5A7A5C)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-          </svg>
+      {/* ── Stats floating card ── */}
+      <div style={{
+        position: "absolute",
+        bottom: 20, right: 16,
+        zIndex: 4, width: 200,
+        transform: t(0.75),
+        transition: "transform .55s ease",
+        background: "white",
+        borderRadius: 18,
+        padding: "16px 18px 18px",
+        boxShadow: "0 16px 48px rgba(0,0,0,.13), 0 4px 12px rgba(0,0,0,.07)",
+        border: "1px solid rgba(0,0,0,.05)",
+      }}>
+        {/* Header */}
+        <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 14 }}>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#7A8C7B" }} />
+          <div style={{
+            fontFamily: "'Sora', sans-serif", fontSize: 10, fontWeight: 500,
+            color: "#A0A09C", letterSpacing: ".08em", textTransform: "uppercase",
+          }}>
+            Platform Scale
+          </div>
         </div>
+
+        {/* Vocabulary */}
+        <div style={{ paddingBottom: 12, marginBottom: 12, borderBottom: "1px solid #F2F2EF" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 600, color: "#1A1A1A", lineHeight: 1, letterSpacing: "-.02em" }}>20K+</div>
+              <div style={{ fontFamily: "'Sora', sans-serif", fontSize: 9.5, color: "#A0A09C", marginTop: 3 }}>Vocabulary Entries</div>
+            </div>
+            {/* Character tiles */}
+            <div style={{ display: "flex", gap: 3, marginTop: 2 }}>
+              {["字", "词", "语"].map((c, i) => (
+                <div key={i} style={{
+                  width: 22, height: 22, borderRadius: 6,
+                  background: `rgba(122,140,123,${0.1 + i * 0.08})`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: 13, color: "#7A8C7B", fontWeight: 600,
+                }}>{c}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Progress */}
+        <div style={{ paddingBottom: 12, marginBottom: 12, borderBottom: "1px solid #F2F2EF" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 600, color: "#1A1A1A", lineHeight: 1, letterSpacing: "-.02em" }}>600K+</div>
+              <div style={{ fontFamily: "'Sora', sans-serif", fontSize: 9.5, color: "#A0A09C", marginTop: 3 }}>Progress Records</div>
+            </div>
+            {/* Calendar dot grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2.5, marginTop: 2 }}>
+              {[1, 1, 1, 1, 1, 0, 1, 0, 0].map((on, i) => (
+                <div key={i} style={{
+                  width: 7, height: 7, borderRadius: 2,
+                  background: on ? `rgba(122,140,123,${0.35 + i * 0.05})` : "#F0F0EC",
+                }} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Students */}
         <div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: "#1A1A1A" }}>20,000+ Words</div>
-          <div style={{ fontSize: 11, color: "#707070" }}>Mandarin vocabulary</div>
+          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 26, fontWeight: 600, color: "#1A1A1A", lineHeight: 1, letterSpacing: "-.02em" }}>400+</div>
+              <div style={{ fontFamily: "'Sora', sans-serif", fontSize: 9.5, color: "#A0A09C", marginTop: 3 }}>Students Supported</div>
+            </div>
+            {/* Graduation cap row */}
+            <div style={{ display: "flex", gap: 2, marginTop: 4 }}>
+              {[...Array(3)].map((_, i) => (
+                <div key={i} style={{
+                  width: 22, height: 22, borderRadius: "50%",
+                  background: `rgba(122,140,123,${0.12 + i * 0.08})`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 11,
+                }}>🎓</div>
+              ))}
+            </div>
+          </div>
         </div>
+
       </div>
+
     </div>
   );
 }
@@ -148,10 +317,9 @@ function Hero() {
         display: "grid",
         gridTemplateColumns: isTablet ? "1fr" : "1fr 1fr",
         alignItems: "center",
-        gap: 64,
+        gap: 48,
         padding: isMobile ? "100px 20px 60px" : isTablet ? "100px 32px 60px" : "88px 56px 60px",
-        maxWidth: 1380,
-        margin: "0 auto",
+        maxWidth: 1380, margin: "0 auto",
       }}
     >
       <div style={{ textAlign: isTablet ? "center" : "left" }}>
@@ -186,40 +354,22 @@ function Hero() {
         </div>
       </div>
 
-      {/* Mockups — desktop only */}
+      {/* Desktop — full parallax composition */}
       {!isTablet && <HeroMockups mx={mouse.x} my={mouse.y} />}
 
-      {/* Tablet: simple visual accent instead of full composition */}
+      {/* Tablet — simple 2×2 placeholder grid */}
       {isTablet && !isMobile && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, maxWidth: 500, margin: "0 auto" }}>
-          <div className="mc" style={{ background: "#1E2420", padding: 20, borderRadius: 18 }}>
-            <div style={{ color: "#7A8C7B", fontSize: 10, fontWeight: 500, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 10 }}>Analytics</div>
-            <div style={{ display: "flex", gap: 4, alignItems: "flex-end", height: 48 }}>
-              {[65, 82, 71, 90, 78, 88, 100].map((h, i) => (
-                <div key={i} style={{ flex: 1, height: `${h}%`, background: i === 6 ? "#7A8C7B" : "rgba(122,140,123,.4)", borderRadius: "2px 2px 0 0" }} />
-              ))}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, maxWidth: 480, margin: "0 auto" }}>
+          {[
+            { label: "Dashboard", dark: false },
+            { label: "Flashcard Review", dark: true },
+            { label: "Analytics", dark: false },
+            { label: "SRS Progress", dark: false },
+          ].map((p, i) => (
+            <div key={i} style={{ borderRadius: 14, overflow: "hidden", height: 130, boxShadow: "0 8px 24px rgba(0,0,0,.09)" }}>
+              <ScreenPlaceholder label={p.label} dark={p.dark} />
             </div>
-            <div style={{ marginTop: 10, color: "#FAFAF7", fontSize: 18, fontWeight: 600 }}>94% <span style={{ fontSize: 11, color: "#707070", fontWeight: 400 }}>retention</span></div>
-          </div>
-          <div className="mc" style={{ background: "white", border: "1px solid #EDEDEA", padding: 20, borderRadius: 18, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6 }}>
-            <div style={{ fontSize: 9, color: "#7A8C7B", letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 500 }}>Flashcard</div>
-            <div className="df" style={{ fontSize: 44, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>学</div>
-            <div style={{ fontSize: 12, color: "#707070" }}>xué · to learn</div>
-          </div>
-          <div className="mc" style={{ background: "linear-gradient(145deg,#F5F8F5,#EAF0EA)", border: "1px solid #D4DDD4", padding: 20, borderRadius: 18 }}>
-            <div style={{ fontSize: 9, color: "#7A8C7B", letterSpacing: ".06em", textTransform: "uppercase", fontWeight: 500, marginBottom: 8 }}>Stack</div>
-            {["React", "Express", "PostgreSQL"].map((l, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#7A8C7B" }} />
-                <span style={{ fontSize: 11, color: "#555" }}>{l}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mc" style={{ background: "white", border: "1px solid #EDEDEA", padding: 20, borderRadius: 18 }}>
-            <div style={{ fontSize: 9, color: "#9AA89B", fontWeight: 500, marginBottom: 8 }}>Vocabulary</div>
-            <div style={{ fontSize: 26, fontWeight: 700, color: "#1A1A1A" }}>20K+</div>
-            <div style={{ fontSize: 11, color: "#7A8C7B" }}>words</div>
-          </div>
+          ))}
         </div>
       )}
     </section>
@@ -250,7 +400,7 @@ function FeaturedProject() {
             System
           </h2>
           <p className="reveal d2" style={{ fontSize: isMobile ? 14 : 16, color: "#707070", lineHeight: 1.8, fontWeight: 300, marginBottom: 14 }}>
-            A full-stack educational platform combining personalized flashcard learning with spaced repetition science — built to serve real classrooms, teachers, and students.
+            A full-stack educational platform combining personalized flashcard learning with spaced repetition system — built to serve real classrooms, teachers, and students.
           </p>
           <p className="reveal d3" style={{ fontSize: isMobile ? 14 : 16, color: "#707070", lineHeight: 1.8, fontWeight: 300, marginBottom: 36 }}>
             From teacher-controlled classroom integration to per-student learning analytics and intelligent review scheduling, this system takes learners from beginner to fluency with data-driven precision.
@@ -258,50 +408,89 @@ function FeaturedProject() {
           <a href="#" className="bp reveal d4">View Case Study <ArrowRight size={15} /></a>
         </div>
 
-        {/* Mockup — hidden on mobile to save space */}
-        {!isMobile && (
-          <div className="reveal d1" style={{ position: "relative", height: isTablet ? 340 : 420 }}>
-            <div className="mc" style={{ position: "absolute", top: 0, left: 0, right: 0, height: isTablet ? 210 : 264, background: "linear-gradient(135deg,#1E2420,#2A3628)", padding: 20 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <span className="df" style={{ color: "#FAFAF7", fontSize: 17, fontWeight: 600 }}>汉字学习</span>
-                <div style={{ display: "flex", gap: 4 }}>
-                  {["HSK 1", "HSK 2", "HSK 3"].map((l) => (
-                    <span key={l} style={{ fontSize: 9, color: "#7A8C7B", background: "rgba(122,140,123,.2)", padding: "2px 7px", borderRadius: 100 }}>{l}</span>
-                  ))}
-                </div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, marginBottom: 16 }}>
-                {["学", "习", "语", "言", "教", "育", "智", "能"].map((c, i) => (
-                  <div key={i} style={{ background: i === 3 ? "rgba(255,255,255,.08)" : "rgba(255,255,255,.06)", borderRadius: 8, padding: 10, textAlign: "center", border: i === 3 ? "1px solid rgba(122,140,123,.3)" : "none" }}>
-                    <span className="df" style={{ color: i === 3 ? "#7A8C7B" : "#FAFAF7", fontSize: 18, opacity: i === 3 ? 1 : .85 }}>{c}</span>
-                  </div>
-                ))}
-              </div>
-              <div style={{ height: 30, background: "rgba(122,140,123,.15)", borderRadius: 7, display: "flex", alignItems: "center", padding: "0 14px" }}>
-                <div style={{ width: "62%", height: 4, background: "#7A8C7B", borderRadius: 100 }} />
-                <div style={{ marginLeft: "auto", fontSize: 10, color: "#7A8C7B" }}>62%</div>
+        {/* Mockup stack */}
+        <div className="reveal d1" style={{ position: "relative", height: isTablet ? 350 : 440 }}>
+
+          {/* Main screen — 2:1 ratio to match screenshot */}
+          <div className="mc" style={{
+            position: "absolute", top: 0, left: 0, right: 0,
+            height: isTablet ? 210 : 295,
+            borderRadius: 16, overflow: "hidden",
+            WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+          }}>
+            <img
+              src="/crg-flashcard.png"
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left", display: "block" }}
+            />
+          </div>
+
+          {/* Bottom-left — Progress ring */}
+          <div className="mc" style={{
+            position: "absolute", bottom: 0, left: 0,
+            width: isTablet ? 155 : 190, height: 130,
+            borderRadius: 16, background: "white",
+            border: "1px solid #EDEDEA",
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
+          }}>
+            {/* Donut */}
+            <div style={{ position: "relative", width: 68, height: 68, flexShrink: 0 }}>
+              <svg viewBox="0 0 68 68" width="68" height="68" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="34" cy="34" r="26" fill="none" stroke="#F0F0EC" strokeWidth="7" />
+                <circle cx="34" cy="34" r="26" fill="none" stroke="#7A8C7B" strokeWidth="7"
+                  strokeDasharray="104 163.4" strokeLinecap="round" />
+              </svg>
+              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 15, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>48</div>
+                <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 9, color: "#9AA89B" }}>/ 73</div>
               </div>
             </div>
-            <div className="mc" style={{ position: "absolute", bottom: 0, left: 0, width: isTablet ? 160 : 196, background: "white", border: "1px solid #EDEDEA", padding: 18 }}>
-              <div style={{ fontSize: 10, color: "#9AA", fontWeight: 500, marginBottom: 8, letterSpacing: ".05em", textTransform: "uppercase" }}>Today's Review</div>
-              <div style={{ fontSize: 32, fontWeight: 700, color: "#1A1A1A", marginBottom: 3 }}>48</div>
-              <div style={{ fontSize: 11, color: "#707070" }}>cards due · <span style={{ color: "#7A8C7B" }}>12 new</span></div>
-            </div>
-            <div className="mc" style={{ position: "absolute", bottom: 0, right: 0, width: isTablet ? 150 : 176, background: "white", border: "1px solid #EDEDEA", padding: 18, display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ fontSize: 10, color: "#9AA", fontWeight: 500, marginBottom: 8, letterSpacing: ".05em", textTransform: "uppercase", alignSelf: "flex-start" }}>Retention</div>
-              <div style={{ position: "relative", width: 68, height: 68 }}>
-                <svg viewBox="0 0 76 76" width="68" height="68" style={{ transform: "rotate(-90deg)" }}>
-                  <circle cx="38" cy="38" r="30" fill="none" stroke="#F0F0EC" strokeWidth="8" />
-                  <circle cx="38" cy="38" r="30" fill="none" stroke="#7A8C7B" strokeWidth="8" strokeDasharray="188.5 200" strokeLinecap="round" />
-                </svg>
-                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 700, color: "#1A1A1A" }}>94%</div>
+            {/* Label */}
+            <div>
+              <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 11, fontWeight: 600, color: "#1A1A1A", marginBottom: 2 }}>Cards</div>
+              <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 11, fontWeight: 600, color: "#1A1A1A", marginBottom: 6 }}>Reviewed</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#7A8C7B" }} />
+                <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 9, color: "#9AA89B" }}>Today</div>
               </div>
             </div>
           </div>
-        )}
+
+          {/* Bottom-right — Review buttons */}
+          <div className="mc" style={{
+            position: "absolute", bottom: 0, right: 0,
+            width: isTablet ? 145 : 174, height: 130,
+            borderRadius: 16, background: "#1C1C1E",
+            padding: "12px 12px 12px",
+            display: "flex", flexDirection: "column", justifyContent: "space-between",
+          }}>
+            <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 9, color: "#9c9c9c", fontWeight: 500, letterSpacing: ".07em", textTransform: "uppercase" }}>
+              Review
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+              {[
+                { label: "Forgot", time: "1m", bg: "#8B1A1A" },
+                { label: "Hard", time: "10m", bg: "#8B6000" },
+                { label: "Remember", time: "2d", bg: "#1A6B33" },
+              ].map((b) => (
+                <div key={b.label} style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  background: b.bg, borderRadius: 7, padding: "5px 10px",
+                }}>
+                  <span style={{ fontFamily: "'Sora',sans-serif", fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,.9)" }}>
+                    {b.label}
+                  </span>
+                  <span style={{ fontFamily: "'Sora',sans-serif", fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,.5)" }}>
+                    {b.time}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      {/* Feature cards — responsive via CSS class */}
+      {/* Feature cards */}
       <div className="fc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
         {features.map((f, i) => (
           <div key={i} className={`fc reveal d${i + 1}`}>
@@ -321,22 +510,31 @@ function Experience() {
 
   const roles = [
     {
-      period: "2023 — Present", role: "Web Developer", current: true,
-      company: "Singapore Education Network",
-      desc: "Promoted to full Web Developer after outstanding intern performance. Building production-level educational platforms, dynamic systems, and interfaces that serve real users.",
-      tags: ["React", "TypeScript", "Full-Stack", "Production"],
+      period: "2026 — Present", role: "Part Time Web Developer", current: true,
+      company: "Singapore Education Network", duration: null,
+      desc: "Advanced from Intern to Part Time Web Developer, building production-ready educational platforms and scalable web systems used by real users.",
+      tags: ["Wix Velo", "HTML/CSS/JS", "CMS Architecture", "Automations"],
     },
     {
-      period: "2023", role: "UI/UX Associate Intern", current: false,
-      company: "Singapore Education Network",
-      desc: "Designed and implemented UI components for education-related platforms. Collaborated closely with senior engineers in production-level workflows.",
-      tags: ["UI/UX", "Figma", "React", "Collaboration"],
+      period: "2025", role: "UI/UX Associate Intern", current: false,
+      company: "Singapore Education Network", duration: "6 months",
+      desc: "Designed and implemented web interfaces for educational programs and international learning initiatives, collaborating with marketing and partnership teams.",
+      tags: ["Web Design", "User Flows", "Prototyping", "Visual Design", "Frontend Wix", "HTML/CSS/JS"]
+    },
+    {
+      period: "2025 — Present",
+      role: "Web Developer",
+      company: "Chinese Readers Guild",
+      duration: null,
+      desc: "Developing an intelligent Mandarin learning platform featuring spaced repetition flashcards, classroom systems, vocabulary management, and scalable learning infrastructure.",
+      tags: ["PHP", "MySQL", "TypeScript", "React", "Ubuntu VPS", "Spaced Repetition", "System Design", "Full-Stack"],
     },
   ];
 
   return (
     <section id="experience" style={{ padding: spv(isTablet, isMobile), background: "white", width: "100%" }}>
       <div style={{ maxWidth: 1380, margin: "0 auto", padding: innerPad(isMobile), display: "grid", gridTemplateColumns: isTablet ? "1fr" : "1fr 2fr", gap: isTablet ? 40 : 80 }}>
+
         <div>
           <div className="ach reveal" style={{ marginBottom: 20 }}>Career</div>
           <h2 className="df reveal d1" style={{ fontSize: "clamp(28px,3.5vw,52px)", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-.03em", color: "#1A1A1A" }}>
@@ -348,22 +546,55 @@ function Experience() {
         </div>
 
         <div style={{ position: "relative", paddingLeft: 32 }}>
+          {/* Timeline line */}
           <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 2, background: "linear-gradient(180deg,#7A8C7B,rgba(122,140,123,.1))" }} />
+
           <div style={{ display: "flex", flexDirection: "column", gap: 48 }}>
             {roles.map((r, i) => (
               <div key={i} className={`reveal d${i + 1}`} style={{ position: "relative" }}>
-                <div style={{ position: "absolute", left: -40, top: 5, width: 13, height: 13, borderRadius: "50%", background: r.current ? "#7A8C7B" : "#D4D4D0", border: "2.5px solid white", boxShadow: r.current ? "0 0 0 3px rgba(122,140,123,.2)" : "none" }} />
-                <div style={{ fontSize: 12, color: "#7A8C7B", fontWeight: 500, letterSpacing: ".04em", marginBottom: 6 }}>{r.period}</div>
+
+                {/* Timeline dot — left: -38 centers 13px dot on 2px line with paddingLeft: 32 */}
+                <div style={{
+                  position: "absolute", left: -37, top: 4,
+                  width: 13, height: 13, borderRadius: "50%",
+                  background: r.current ? "#7A8C7B" : "#D4D4D0",
+                  border: "2.5px solid white",
+                  boxShadow: r.current ? "0 0 0 3px rgba(122,140,123,.2)" : "none",
+                }} />
+
+                {/* Period + duration */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <div style={{ fontSize: 12, color: "#7A8C7B", fontWeight: 500, letterSpacing: ".04em" }}>
+                    {r.period}
+                  </div>
+                  {r.duration && (
+                    <span style={{
+                      fontSize: 10, fontWeight: 600,
+                      color: "#5A7A5B",
+                      background: "rgba(122,140,123,.1)",
+                      border: "1px solid rgba(122,140,123,.25)",
+                      borderRadius: 100,
+                      padding: "2px 9px",
+                      letterSpacing: ".02em",
+                    }}>
+                      {r.duration}
+                    </span>
+                  )}
+                </div>
+
                 <div style={{ fontSize: isMobile ? 18 : 21, fontWeight: 600, color: "#1A1A1A", marginBottom: 2 }}>{r.role}</div>
                 <div style={{ fontSize: 14, color: "#707070", marginBottom: 12 }}>{r.company}</div>
                 <p style={{ fontSize: isMobile ? 13 : 14, color: "#707070", lineHeight: 1.75, marginBottom: 14 }}>{r.desc}</p>
+
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {r.tags.map((t) => <span key={t} className="chip">{t}</span>)}
                 </div>
+
               </div>
             ))}
           </div>
         </div>
+
       </div>
     </section>
   );
@@ -388,25 +619,41 @@ function TechnicalEngineering() {
 
         {/* Architecture diagram */}
         <div className="reveal" style={{ position: "relative", height: isMobile ? 280 : 360, background: "linear-gradient(145deg,#F5F8F5,#EDF2ED)", borderRadius: 24, border: "1px solid #E0E8E0", overflow: "hidden" }}>
+
+          {/* Grid background */}
           <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: .22 }}>
             {[25, 50, 75].map((p) => <line key={`h${p}`} x1="0" y1={`${p}%`} x2="100%" y2={`${p}%`} stroke="#7A8C7B" strokeWidth=".5" />)}
             {[25, 50, 75].map((p) => <line key={`v${p}`} x1={`${p}%`} y1="0" x2={`${p}%`} y2="100%" stroke="#7A8C7B" strokeWidth=".5" />)}
           </svg>
+
+          {/* Connector lines */}
           <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-            <line x1="50%" y1="14%" x2="18%" y2="38%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
-            <line x1="50%" y1="14%" x2="78%" y2="38%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
-            <line x1="18%" y1="48%" x2="30%" y2="66%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
-            <line x1="78%" y1="48%" x2="72%" y2="66%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
+            {/* React → Express */}
+            <line x1="27%" y1="22%" x2="27%" y2="52%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
+            <line x1="27%" y1="22%" x2="70%" y2="52%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
+            <line x1="70%" y1="22%" x2="27%" y2="52%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
+            <line x1="70%" y1="22%" x2="70%" y2="52%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
+            {/* Express → PostgreSQL */}
+            <line x1="27%" y1="62%" x2="49%" y2="80%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
+            <line x1="70%" y1="62%" x2="51%" y2="80%" stroke="#7A8C7B" strokeWidth="1.5" strokeDasharray="5,3" opacity=".5" />
           </svg>
-          <div className="an" style={{ left: "50%", top: "6%", transform: "translateX(-50%)" }}>🌐 Ingress</div>
-          <div className="an" style={{ left: "3%", top: "34%", transform: "translateY(-50%)", fontSize: 10.5 }}>⚛️ React ×2</div>
-          <div className="an" style={{ left: "52%", top: "34%", transform: "translateY(-50%)", fontSize: 10.5 }}>🚀 Express ×3</div>
-          <div className="an" style={{ left: "8%", top: "66%", transform: "translateY(-50%)", fontSize: 10.5 }}>🗄️ PostgreSQL</div>
-          <div className="an" style={{ left: "55%", top: "66%", transform: "translateY(-50%)", fontSize: 10.5 }}>⚡ Redis</div>
-          <div style={{ position: "absolute", bottom: 14, right: 16, fontSize: 9, color: "#9AA89B", letterSpacing: ".06em", textTransform: "uppercase", fontWeight: 500 }}>Kubernetes Cluster</div>
+
+          {/* Row 1 — Frontend */}
+          <div className="an" style={{ left: "13%", top: "14%", transform: "translateY(-50%)" }}>⚛️ React Pod 1</div>
+          <div className="an" style={{ left: "55%", top: "14%", transform: "translateY(-50%)" }}>⚛️ React Pod 2</div>
+
+          {/* Row 2 — Backend */}
+          <div className="an" style={{ left: "13%", top: "56%", transform: "translateY(-50%)" }}>🚀 Express Pod 1</div>
+          <div className="an" style={{ left: "55%", top: "56%", transform: "translateY(-50%)" }}>🚀 Express Pod 2</div>
+
+          {/* Row 3 — Database */}
+          <div className="an" style={{ left: "50%", top: "84%", transform: "translate(-50%,-50%)" }}>🗄️ PostgreSQL</div>
+
+          <div style={{ position: "absolute", bottom: 14, right: 16, fontSize: 9, color: "#9AA89B", letterSpacing: ".06em", textTransform: "uppercase", fontWeight: 500 }}>
+            Kubernetes Cluster
+          </div>
         </div>
 
-        {/* Text */}
         <div>
           <div className="ach reveal" style={{ marginBottom: 20 }}>Engineering</div>
           <h2 className="df reveal d1" style={{ fontSize: "clamp(28px,3.5vw,52px)", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-.03em", color: "#1A1A1A", marginBottom: 24 }}>
@@ -444,7 +691,6 @@ function Teaching() {
     { label: "Developer Community", sub: "Community", icon: "🤝", desc: "Active involvement in developer and educational communities across Indonesia", bg: "linear-gradient(145deg,#EDE8E4,#D8C8C0)", subColor: "#6A4A3A", titleColor: "#2A1A1A", descColor: "#6A4A3A", wide: true },
   ];
 
-  // Desktop: complex grid with spans  |  Tablet: 2×2  |  Mobile: 1 column
   const gridStyle = isMobile
     ? { display: "grid", gridTemplateColumns: "1fr", gap: 12 }
     : isTablet
@@ -466,22 +712,16 @@ function Teaching() {
 
         <div style={gridStyle}>
           {cards.map((c, i) => (
-            <div
-              key={i}
-              className={`tc reveal d${i + 1}`}
-              style={{
-                // Only apply spanning on desktop
-                gridColumn: !isMobile && !isTablet ? (c.large ? "1" : c.wide ? "2 / 4" : "auto") : "auto",
-                gridRow: !isMobile && !isTablet ? (c.large ? "1 / 3" : "auto") : "auto",
-                background: c.bg,
-                borderRadius: 20,
-                padding: c.large && !isTablet ? 32 : 22,
-                display: "flex", flexDirection: "column", justifyContent: "flex-end",
-                position: "relative", overflow: "hidden",
-                border: "1px solid rgba(0,0,0,.04)",
-                minHeight: isMobile ? 140 : isTablet ? 160 : undefined,
-              }}
-            >
+            <div key={i} className={`tc reveal d${i + 1}`} style={{
+              gridColumn: !isMobile && !isTablet ? (c.large ? "1" : c.wide ? "2 / 4" : "auto") : "auto",
+              gridRow: !isMobile && !isTablet ? (c.large ? "1 / 3" : "auto") : "auto",
+              background: c.bg, borderRadius: 20,
+              padding: c.large && !isTablet ? 32 : 22,
+              display: "flex", flexDirection: "column", justifyContent: "flex-end",
+              position: "relative", overflow: "hidden",
+              border: "1px solid rgba(0,0,0,.04)",
+              minHeight: isMobile ? 140 : isTablet ? 160 : undefined,
+            }}>
               <div style={{ position: "absolute", top: 16, right: 16, fontSize: c.large && !isTablet ? 44 : 28, opacity: .18 }}>{c.icon}</div>
               <div style={{ fontSize: 10, color: c.subColor, fontWeight: 500, letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 5 }}>{c.sub}</div>
               <div style={{ fontSize: c.large && !isTablet ? 20 : 15, fontWeight: 600, color: c.titleColor, marginBottom: 4 }}>{c.label}</div>
@@ -497,7 +737,6 @@ function Teaching() {
 // ─── About ────────────────────────────────────────────────────────────────────
 function About() {
   const { isMobile, isTablet } = useBP();
-
   return (
     <section id="about" style={{ padding: sp(isTablet, isMobile), maxWidth: 960, margin: "0 auto", textAlign: "center" }}>
       <div className="ach reveal" style={{ display: "inline-flex", marginBottom: 24 }}>About</div>
@@ -533,17 +772,13 @@ function Contact() {
         <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(122,140,123,.2)", borderRadius: 100, padding: "6px 14px", marginBottom: 28 }}>
           <span style={{ fontSize: 12, color: "#7A8C7B", fontWeight: 500 }}>Get in Touch</span>
         </div>
-
         <h2 className="df reveal d1" style={{ fontSize: "clamp(32px,5.5vw,72px)", fontWeight: 600, lineHeight: 1.06, letterSpacing: "-.035em", color: "#FAFAF7", marginBottom: 16 }}>
           Let's Build<br /><em style={{ color: "#7A8C7B" }}>Meaningful</em> Learning<br />Experiences
         </h2>
-
         <p className="reveal d2" style={{ fontSize: isMobile ? 14 : 16, color: "#888", lineHeight: 1.75, marginBottom: 40 }}>
           Open to collaborations, internships, and conversations about educational technology.
         </p>
-
         <div className="reveal d3" style={{ display: "grid", gap: 12, marginBottom: 36, textAlign: "left" }}>
-          {/* name + email — 1-col on mobile via CSS class */}
           <div className="contact-name-email" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <input className="ci" type="text" placeholder="Your name" />
             <input className="ci" type="email" placeholder="Email address" />
@@ -556,7 +791,6 @@ function Contact() {
             </button>
           </div>
         </div>
-
         <div className="reveal d4" style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
           {socials.map((s) => (
             <a key={s.title} href={s.href} className="sb" title={s.title}>{s.icon}</a>
@@ -570,7 +804,6 @@ function Contact() {
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
   const { isMobile } = useBP();
-
   return (
     <footer style={{ background: "#111", padding: isMobile ? "28px 20px" : "36px 56px", borderTop: "1px solid rgba(255,255,255,.06)" }}>
       <div className="footer-inner" style={{ maxWidth: 1380, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
