@@ -13,11 +13,6 @@ const IconLinkedin = () => (
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
   </svg>
 );
-const IconInstagram = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
-  </svg>
-);
 
 // ─── Breakpoint context ───────────────────────────────────────────────────────
 interface BP { isMobile: boolean; isTablet: boolean; }
@@ -677,7 +672,9 @@ function TechnicalEngineering() {
 // ─── Teaching & Community ─────────────────────────────────────────────────────
 interface TeachingCard {
   label: string; sub: string; icon: string; desc: string;
-  bg: string; subColor: string; titleColor: string; descColor: string;
+  img: string;
+  subColor: string; titleColor: string; descColor: string;
+  overlayStrength?: { top: number; bottom: number };  // ← new
   large?: boolean; wide?: boolean;
 }
 
@@ -685,10 +682,33 @@ function Teaching() {
   const { isMobile, isTablet } = useBP();
 
   const cards: TeachingCard[] = [
-    { label: "AI Workshops", sub: "Teaching", icon: "🎓", desc: "Practical workshops on AI tools and real-world applications for students and communities", bg: "linear-gradient(145deg,#E8EEE8,#C8D8C8)", subColor: "#3A5E3A", titleColor: "#1A2A1A", descColor: "#4A6A4A", large: true },
-    { label: "OSN Informatika", sub: "Mentoring", icon: "🏆", desc: "Mentoring students for national informatics olympiad preparation", bg: "linear-gradient(145deg,#EEE8E8,#D8C8C8)", subColor: "#6A3A3A", titleColor: "#2A1A1A", descColor: "#6A4A4A" },
-    { label: "Assistant Lecturer", sub: "Academia", icon: "📚", desc: "Supporting faculty in programming and systems engineering courses", bg: "linear-gradient(145deg,#E8EBF0,#C8D0D8)", subColor: "#3A4A6A", titleColor: "#1A1A2A", descColor: "#4A4A6A" },
-    { label: "Developer Community", sub: "Community", icon: "🤝", desc: "Active involvement in developer and educational communities across Indonesia", bg: "linear-gradient(145deg,#EDE8E4,#D8C8C0)", subColor: "#6A4A3A", titleColor: "#2A1A1A", descColor: "#6A4A3A", wide: true },
+    {
+      label: "AI Workshops", sub: "Workshop Leader", icon: "🎓",
+      desc: "Prepared and led an AI workshop at Nafiri Study Centre in Jakarta, introducing students to machine learning concepts through Google Teachable Machine and Scratch-based projects.",
+      img: "/nafiri-ai-workshop.jpeg",
+      subColor: "#A8C8A8", titleColor: "#FAFAF7", descColor: "rgba(255,255,255,.7)",
+      large: true,
+    },
+    {
+      label: "OSN Informatika", sub: "Mentoring", icon: "🏆",
+      desc: "Mentoring students for national informatics olympiad preparation",
+      img: "/teaching-osn.jpg",
+      subColor: "#C8A8A8", titleColor: "#FAFAF7", descColor: "rgba(255,255,255,.7)",
+    },
+    {
+      label: "Assistant Lecturer", sub: "Academia", icon: "📚",
+      desc: "Supporting faculty in programming and systems engineering courses",
+      img: "/teaching-session.png",
+      subColor: "#A8B4C8", titleColor: "#FAFAF7", descColor: "rgba(255,255,255,.7)",
+      overlayStrength: { top: 0.45, bottom: 0.88 },  // ← much darker
+    },
+    {
+      label: "Academic Mentorship", sub: "IEC Staff", icon: "📘",
+      desc: "Taught first-year informatics students fundamental algorithms and data structures through academic mentoring sessions and guided problem-solving exercises.",
+      img: "/akpro.JPG",
+      subColor: "#C8B4A8", titleColor: "#FAFAF7", descColor: "rgba(255,255,255,.7)",
+      wide: true,
+    },
   ];
 
   const gridStyle = isMobile
@@ -706,7 +726,7 @@ function Teaching() {
             Sharing Knowledge,<br /><em style={{ color: "#7A8C7B" }}>Building Community</em>
           </h2>
           <p className="reveal d2" style={{ fontSize: isMobile ? 14 : 16, color: "#707070", lineHeight: 1.7, fontWeight: 300, maxWidth: 480, margin: "16px auto 0" }}>
-            Education is not just what I build — it's what I do.
+            Teaching algorithms, programming, and practical technology through real workshops and mentoring.
           </p>
         </div>
 
@@ -715,17 +735,54 @@ function Teaching() {
             <div key={i} className={`tc reveal d${i + 1}`} style={{
               gridColumn: !isMobile && !isTablet ? (c.large ? "1" : c.wide ? "2 / 4" : "auto") : "auto",
               gridRow: !isMobile && !isTablet ? (c.large ? "1 / 3" : "auto") : "auto",
-              background: c.bg, borderRadius: 20,
-              padding: c.large && !isTablet ? 32 : 22,
+              borderRadius: 20,
               display: "flex", flexDirection: "column", justifyContent: "flex-end",
               position: "relative", overflow: "hidden",
-              border: "1px solid rgba(0,0,0,.04)",
-              minHeight: isMobile ? 140 : isTablet ? 160 : undefined,
+              border: "1px solid rgba(0,0,0,.08)",
+              minHeight: isMobile ? 160 : isTablet ? 180 : undefined,
             }}>
-              <div style={{ position: "absolute", top: 16, right: 16, fontSize: c.large && !isTablet ? 44 : 28, opacity: .18 }}>{c.icon}</div>
-              <div style={{ fontSize: 10, color: c.subColor, fontWeight: 500, letterSpacing: ".06em", textTransform: "uppercase", marginBottom: 5 }}>{c.sub}</div>
-              <div style={{ fontSize: c.large && !isTablet ? 20 : 15, fontWeight: 600, color: c.titleColor, marginBottom: 4 }}>{c.label}</div>
-              <div style={{ fontSize: 12.5, color: c.descColor, lineHeight: 1.5 }}>{c.desc}</div>
+              {/* Background image */}
+              <img
+                src={c.img}
+                alt=""
+                style={{
+                  position: "absolute", inset: 0,
+                  width: "100%", height: "100%",
+                  objectFit: "cover", objectPosition: "center",
+                  display: "block",
+                }}
+              />
+
+              {/* Gradient overlay — darkens toward bottom for text legibility */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: `linear-gradient(to bottom,
+                  rgba(0,0,0,${c.overlayStrength?.top ?? 0.15}) 0%,
+                  rgba(0,0,0,${c.overlayStrength?.bottom ?? 0.65}) 100%
+                )`,
+              }} />
+
+              {/* Emoji icon */}
+              <div style={{
+                position: "absolute", top: 16, right: 16,
+                fontSize: c.large && !isTablet ? 44 : 28,
+                opacity: .5, zIndex: 1,
+              }}>
+                {c.icon}
+              </div>
+
+              {/* Text content */}
+              <div style={{ position: "relative", zIndex: 1, padding: c.large && !isTablet ? 28 : 18 }}>
+                <div style={{ fontSize: 10, color: c.subColor, fontWeight: 500, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 5 }}>
+                  {c.sub}
+                </div>
+                <div style={{ fontSize: c.large && !isTablet ? 20 : 15, fontWeight: 600, color: c.titleColor, marginBottom: 4 }}>
+                  {c.label}
+                </div>
+                <div style={{ fontSize: 12.5, color: c.descColor, lineHeight: 1.5 }}>
+                  {c.desc}
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -744,7 +801,7 @@ function About() {
         "At the intersection of engineering<br />and learning experience design."
       </h2>
       <p className="reveal d2" style={{ fontSize: isMobile ? 14 : 17, color: "#707070", lineHeight: 1.9, fontWeight: 300, marginBottom: 16 }}>
-        I'm a Software Engineering student at Universitas X with a deep interest in educational technology. I believe the best digital learning systems are built at the intersection of rigorous engineering and thoughtful experience design.
+        I'm a Software Engineering student at Institut Teknologi Harapan Bangsa with a deep interest in educational technology. I believe the best digital learning systems are built at the intersection of rigorous engineering and thoughtful experience design.
       </p>
       <p className="reveal d3" style={{ fontSize: isMobile ? 14 : 17, color: "#707070", lineHeight: 1.9, fontWeight: 300, marginBottom: 40 }}>
         My work focuses on building intelligent systems that make learning more adaptive, meaningful, and human — from classroom-integrated platforms to spaced repetition engines and analytics dashboards.
@@ -758,44 +815,119 @@ function About() {
 function Contact() {
   const { isMobile, isTablet } = useBP();
 
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.message) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("https://formspree.io/f/mwvzvzow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: form.subject,
+          message: form.message,
+        }),
+      });
+      setStatus(res.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const handleReset = () => {
+    setForm({ name: "", email: "", subject: "", message: "" });
+    setStatus("idle");
+    // Re-observe any .reveal elements that came back into the DOM
+    setTimeout(() => {
+      document.querySelectorAll(".reveal:not(.vis)").forEach((el) => el.classList.add("vis"));
+    }, 50);
+  };
+
   const socials = [
-    { icon: <Mail size={18} />, href: "mailto:hello@leonardsamuel.com", title: "Email" },
-    { icon: <IconGithub />, href: "https://github.com", title: "GitHub" },
-    { icon: <IconLinkedin />, href: "https://linkedin.com", title: "LinkedIn" },
-    { icon: <MessageCircle size={18} />, href: "https://wa.me/", title: "WhatsApp" },
-    { icon: <IconInstagram />, href: "https://instagram.com", title: "Instagram" },
+    { icon: <Mail size={18} />, href: "mailto:leonsamuels080306@gmail.com", title: "Email" },
+    { icon: <IconGithub />, href: "https://github.com/Leon080306", title: "GitHub" },
+    { icon: <IconLinkedin />, href: "https://www.linkedin.com/in/leonard-samuel-setiawan", title: "LinkedIn" },
+    { icon: <MessageCircle size={18} />, href: "https://wa.me/qr/5RF57YAMNZROA1", title: "WhatsApp" },
   ];
 
   return (
     <section id="contact" style={{ background: "#1A1A1A", padding: sp(isTablet, isMobile), width: "100%" }}>
       <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center" }}>
+
         <div className="reveal" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(122,140,123,.2)", borderRadius: 100, padding: "6px 14px", marginBottom: 28 }}>
           <span style={{ fontSize: 12, color: "#7A8C7B", fontWeight: 500 }}>Get in Touch</span>
         </div>
+
         <h2 className="df reveal d1" style={{ fontSize: "clamp(32px,5.5vw,72px)", fontWeight: 600, lineHeight: 1.06, letterSpacing: "-.035em", color: "#FAFAF7", marginBottom: 16 }}>
           Let's Build<br /><em style={{ color: "#7A8C7B" }}>Meaningful</em> Learning<br />Experiences
         </h2>
+
         <p className="reveal d2" style={{ fontSize: isMobile ? 14 : 16, color: "#888", lineHeight: 1.75, marginBottom: 40 }}>
           Open to collaborations, internships, and conversations about educational technology.
         </p>
-        <div className="reveal d3" style={{ display: "grid", gap: 12, marginBottom: 36, textAlign: "left" }}>
-          <div className="contact-name-email" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <input className="ci" type="text" placeholder="Your name" />
-            <input className="ci" type="email" placeholder="Email address" />
-          </div>
-          <input className="ci" type="text" placeholder="Subject" />
-          <textarea className="ci" rows={4} placeholder="Your message..." style={{ resize: "vertical" }} />
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <button className="bp" style={{ padding: "14px 40px" }}>
-              Send Message <ArrowRight size={15} />
+
+        {/* Success state */}
+        {status === "success" ? (
+          <div style={{
+            background: "rgba(122,140,123,.15)",
+            border: "1px solid rgba(122,140,123,.3)",
+            borderRadius: 16, padding: "36px 24px", marginBottom: 36,
+            animation: "ls-fade-up .6s cubic-bezier(.16,1,.3,1) forwards", // ← reuse existing keyframe
+          }}>
+            <div style={{ fontSize: 32, marginBottom: 12 }}>✉️</div>
+            <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 16, fontWeight: 600, color: "#FAFAF7", marginBottom: 8 }}>
+              Message sent!
+            </div>
+            <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 14, color: "#888" }}>
+              Thanks for reaching out — I'll get back to you soon.
+            </div>
+            <button onClick={handleReset} style={{ marginTop: 20, background: "none", border: "1px solid #444", borderRadius: 100, padding: "8px 20px", color: "#888", fontSize: 12, cursor: "pointer", fontFamily: "'Sora',sans-serif" }}>
+              Send another
             </button>
           </div>
-        </div>
+        ) : (
+          <div className="reveal d3" style={{ display: "grid", gap: 12, marginBottom: 36, textAlign: "left" }}>
+            <div className="contact-name-email" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <input className="ci" name="name" type="text" placeholder="Your name" value={form.name} onChange={handleChange} />
+              <input className="ci" name="email" type="email" placeholder="Email address" value={form.email} onChange={handleChange} />
+            </div>
+            <input className="ci" name="subject" type="text" placeholder="Subject" value={form.subject} onChange={handleChange} />
+            <textarea className="ci" name="message" rows={4} placeholder="Your message..." value={form.message} onChange={handleChange} style={{ resize: "vertical" }} />
+
+            {/* Error message */}
+            {status === "error" && (
+              <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 13, color: "#E07070", textAlign: "center" }}>
+                Something went wrong. Please try again or email me directly.
+              </div>
+            )}
+
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button
+                className="bp"
+                onClick={handleSubmit}
+                disabled={status === "sending"}
+                style={{ padding: "14px 40px", opacity: status === "sending" ? 0.6 : 1, cursor: status === "sending" ? "not-allowed" : "pointer" }}
+              >
+                {status === "sending" ? "Sending…" : <>Send Message <ArrowRight size={15} /></>}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="reveal d4" style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
           {socials.map((s) => (
-            <a key={s.title} href={s.href} className="sb" title={s.title}>{s.icon}</a>
+            <a key={s.title} href={s.href} target="_blank" rel="noopener noreferrer" className="sb" title={s.title}>{s.icon}</a>
           ))}
         </div>
+
       </div>
     </section>
   );

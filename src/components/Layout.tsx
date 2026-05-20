@@ -80,6 +80,11 @@ const GLOBAL_CSS = `
 
   /* Contact form: 1-col on mobile */
   @media (max-width: 639px) { .contact-name-email { grid-template-columns: 1fr !important; } }
+
+  @keyframes ls-fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 `;
 
 export default function Layout() {
