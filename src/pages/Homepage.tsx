@@ -19,34 +19,6 @@ interface BP { isMobile: boolean; isTablet: boolean; }
 const BPCtx = createContext<BP>({ isMobile: false, isTablet: false });
 const useBP = () => useContext(BPCtx);
 
-// ─── Screen placeholder ───────────────────────────────────────────────────────
-// When your screenshots are ready, replace this component inside any device
-// frame with:  <img src="/your-screenshot.png" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-function ScreenPlaceholder({ label, dark = false }: { label: string; dark?: boolean }) {
-  return (
-    <div style={{
-      width: "100%", height: "100%",
-      background: dark ? "#1C2320" : "#EDF2ED",
-      display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center", gap: 8,
-    }}>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke={dark ? "#3A5C3A" : "#9AB49B"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <circle cx="8.5" cy="8.5" r="1.5" />
-        <polyline points="21 15 16 10 5 21" />
-      </svg>
-      <span style={{
-        fontFamily: "'Sora', sans-serif", fontSize: 10, fontWeight: 500,
-        letterSpacing: ".09em", textTransform: "uppercase",
-        color: dark ? "#3A5C3A" : "#9AB49B",
-      }}>
-        {label}
-      </span>
-    </div>
-  );
-}
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const Divider = () => (
   <div style={{ height: 1, background: "linear-gradient(90deg,transparent,#E0E0DC,transparent)", maxWidth: 1380, margin: "0 auto" }} />
@@ -354,17 +326,39 @@ function Hero() {
 
       {/* Tablet — simple 2×2 placeholder grid */}
       {isTablet && !isMobile && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, maxWidth: 480, margin: "0 auto" }}>
-          {[
-            { label: "Dashboard", dark: false },
-            { label: "Flashcard Review", dark: true },
-            { label: "Analytics", dark: false },
-            { label: "SRS Progress", dark: false },
-          ].map((p, i) => (
-            <div key={i} style={{ borderRadius: 14, overflow: "hidden", height: 130, boxShadow: "0 8px 24px rgba(0,0,0,.09)" }}>
-              <ScreenPlaceholder label={p.label} dark={p.dark} />
+        <div style={{ position: "relative", height: 340, maxWidth: 520, margin: "0 auto", width: "100%" }}>
+
+          {/* Monitor */}
+          <div style={{
+            position: "absolute", top: 0, left: 40, right: 0,
+            background: "#161616", borderRadius: 12,
+            padding: "7px 7px 26px",
+            boxShadow: "0 24px 64px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07)",
+          }}>
+            <div style={{ borderRadius: 7, overflow: "hidden", height: 200 }}>
+              <img src="/crg-admin-dashboard.png" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left", display: "block" }} />
             </div>
-          ))}
+            {/* Monitor stand */}
+            <div style={{ position: "absolute", bottom: -14, left: "50%", transform: "translateX(-50%)", width: 32, height: 14, background: "#1C1C1C", clipPath: "polygon(20% 0%,80% 0%,100% 100%,0% 100%)" }} />
+            <div style={{ position: "absolute", bottom: -20, left: "50%", transform: "translateX(-50%)", width: 70, height: 5, borderRadius: 3, background: "#1C1C1C" }} />
+          </div>
+
+          {/* Phone */}
+          <div style={{
+            position: "absolute", bottom: 0, left: 0,
+            width: 120, height: 240,
+            background: "#161616", borderRadius: 16,
+            padding: 4,
+            boxShadow: "0 20px 52px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.07)",
+            zIndex: 2,
+          }}>
+            {/* Dynamic island */}
+            <div style={{ position: "absolute", top: 6, left: "50%", transform: "translateX(-50%)", width: 44, height: 13, borderRadius: 8, background: "#000", zIndex: 1 }} />
+            <div style={{ width: "100%", height: "100%", borderRadius: 12, overflow: "hidden" }}>
+              <img src="/crg-card-swipe.jpeg" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
+            </div>
+          </div>
+
         </div>
       )}
     </section>
@@ -692,7 +686,7 @@ function Teaching() {
     {
       label: "OSN Informatika", sub: "Mentoring", icon: "🏆",
       desc: "Mentoring students for national informatics olympiad preparation",
-      img: "/teaching-osn.jpg",
+      img: "/osn.jpeg",
       subColor: "#C8A8A8", titleColor: "#FAFAF7", descColor: "rgba(255,255,255,.7)",
     },
     {
