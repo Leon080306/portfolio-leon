@@ -296,14 +296,14 @@ function Hero() {
         </div>
 
         <h1 className="df reveal" style={{ fontSize: "clamp(44px,5.8vw,84px)", fontWeight: 600, lineHeight: 1.04, letterSpacing: "-.035em", color: "#1A1A1A", marginBottom: 24 }}>
-          Designing<br />
+          Designingggg<br />
           <em style={{ fontStyle: "italic", color: "#7A8C7B" }}>Intelligent</em><br />
           Learning<br />
           Experiences
         </h1>
 
         <p className="reveal d1" style={{ fontSize: isMobile ? 15 : 17, color: "#707070", lineHeight: 1.75, fontWeight: 300, maxWidth: isTablet ? "100%" : 440, marginBottom: 36 }}>
-          I build educational technology systems that combine algorithms, user experience, and scalable engineering.
+          Informatics student and full-stack developer building educational technology, scalable learning systems, and real-world teaching experiences.
         </p>
 
         <div className="reveal d2" style={{ display: "flex", gap: 12, marginBottom: 48, justifyContent: isTablet ? "center" : "flex-start", flexWrap: "wrap" }}>
@@ -366,130 +366,243 @@ function Hero() {
 }
 
 // ─── Featured Project ─────────────────────────────────────────────────────────
+// ─── Featured Projects ────────────────────────────────────────────────────────
 function FeaturedProject() {
   const { isMobile, isTablet } = useBP();
 
-  const features = [
-    { icon: "🗃️", title: "20,000+ Vocabulary", desc: "Curated Mandarin database with tones, HSK levels, and rich context" },
-    { icon: "🏫", title: "Classroom System", desc: "Teacher dashboards, student groups, and structured assignment flows" },
-    { icon: "🔄", title: "Flashcard Engine", desc: "SRS-powered review with swipe interactions and real-time progress" },
-    { icon: "📊", title: "Adaptive Insights", desc: "Per-student analytics, retention modeling and smart scheduling" },
+  const projects = [
+    {
+      category: "Educational Platform",
+      title: "Chinese Readers Guild Platform",
+      desc: "A comprehensive learning platform supporting vocabulary study, spaced repetition, and progress tracking for Mandarin learners.",
+      challenge: "Handling complex spaced repetition logic and database scaling to hundreds of thousands of progress records.",
+      solution: "Designed optimized algorithms and database structures. Built real-time thousands tracking and adaptive review systems.",
+      impact: "600K+ progress records, 20K+ vocabulary entries, and used by 400+ students worldwide.",
+      tags: ["Next.js", "Node.js", "PostgreSQL", "Tailwind CSS", "Prisma"],
+      visual: "mockup", // composite monitor + phone
+    },
+    {
+      category: "DevOps & Infrastructure",
+      title: "Kubernetes E-Commerce System",
+      desc: "Deployed a containerized e-commerce application with microservices architecture on a Kubernetes cluster.",
+      challenge: "Managing deployments, scalability, and service reliability across multiple containers.",
+      solution: "Implemented Kubernetes orchestration, resource limits, auto-scaling, and monitoring.",
+      impact: "High availability, easier scaling, and improved system resilience.",
+      tags: ["Kubernetes", "Docker", "Nginx", "PostgreSQL", "Redis"],
+      visual: "arch", // architecture diagram
+    },
+    {
+      category: "Education & Community",
+      title: "AI Workshop & Mentorship Programs",
+      desc: "Conducted hands-on AI workshops and mentored students in algorithms, programming, and competitive olympiads.",
+      challenge: "Making complex AI topics accessible and engaging for students with different backgrounds.",
+      solution: "Designed interactive sessions, real-world projects, and provided mentorship & guidance.",
+      impact: "Hundreds of students trained and mentored through workshops and competitions.",
+      tags: ["Python", "Machine Learning", "Teaching", "Mentorship"],
+      visual: "photo",
+    },
   ];
 
   return (
     <section id="projects" style={{ padding: sp(isTablet, isMobile), maxWidth: 1380, margin: "0 auto" }}>
-      <div style={{ display: "grid", gridTemplateColumns: isTablet ? "1fr" : "1fr 1fr", gap: isTablet ? 48 : 80, alignItems: "center", marginBottom: isMobile ? 40 : 60 }}>
 
-        {/* Text */}
+      {/* ── Section header ── */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isTablet ? "1fr" : "1fr 1fr",
+        gap: isTablet ? 24 : 80,
+        alignItems: "flex-end",
+        marginBottom: isMobile ? 36 : 56,
+      }}>
         <div>
-          <div className="ach reveal" style={{ marginBottom: 20 }}>Featured Project</div>
-          <h2 className="df reveal d1" style={{ fontSize: "clamp(30px,4vw,60px)", fontWeight: 600, lineHeight: 1.08, letterSpacing: "-.03em", color: "#1A1A1A", marginBottom: 24 }}>
-            Building a Smarter<br />
-            <em style={{ fontStyle: "italic", color: "#7A8C7B" }}>Mandarin Learning</em><br />
-            System
+          <div className="ach reveal" style={{ marginBottom: 20 }}>Selected Work</div>
+          <h2 className="df reveal d1" style={{
+            fontSize: "clamp(32px,4.5vw,68px)", fontWeight: 600,
+            lineHeight: 1.06, letterSpacing: "-.035em", color: "#1A1A1A", margin: 0,
+          }}>
+            Projects Built with<br />
+            <em style={{ fontStyle: "italic", color: "#7A8C7B" }}>Purpose and Process</em>
           </h2>
-          <p className="reveal d2" style={{ fontSize: isMobile ? 14 : 16, color: "#707070", lineHeight: 1.8, fontWeight: 300, marginBottom: 14 }}>
-            A full-stack educational platform combining personalized flashcard learning with spaced repetition system — built to serve real classrooms, teachers, and students.
-          </p>
-          <p className="reveal d3" style={{ fontSize: isMobile ? 14 : 16, color: "#707070", lineHeight: 1.8, fontWeight: 300, marginBottom: 36 }}>
-            From teacher-controlled classroom integration to per-student learning analytics and intelligent review scheduling, this system takes learners from beginner to fluency with data-driven precision.
-          </p>
-          <a href="#" className="bp reveal d4">View Case Study <ArrowRight size={15} /></a>
         </div>
-
-        {/* Mockup stack */}
-        <div className="reveal d1" style={{ position: "relative", height: isTablet ? 350 : 440 }}>
-
-          {/* Main screen — 2:1 ratio to match screenshot */}
-          <div className="mc" style={{
-            position: "absolute", top: 0, left: 0, right: 0,
-            height: isTablet ? 210 : 295,
-            borderRadius: 16, overflow: "hidden",
-            WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-          }}>
-            <img
-              src="/crg-flashcard.png"
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left", display: "block" }}
-            />
-          </div>
-
-          {/* Bottom-left — Progress ring */}
-          <div className="mc" style={{
-            position: "absolute", bottom: 0, left: 0,
-            width: isTablet ? 155 : 190, height: 130,
-            borderRadius: 16, background: "white",
-            border: "1px solid #EDEDEA",
-            display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
-          }}>
-            {/* Donut */}
-            <div style={{ position: "relative", width: 68, height: 68, flexShrink: 0 }}>
-              <svg viewBox="0 0 68 68" width="68" height="68" style={{ transform: "rotate(-90deg)" }}>
-                <circle cx="34" cy="34" r="26" fill="none" stroke="#F0F0EC" strokeWidth="7" />
-                <circle cx="34" cy="34" r="26" fill="none" stroke="#7A8C7B" strokeWidth="7"
-                  strokeDasharray="104 163.4" strokeLinecap="round" />
-              </svg>
-              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 15, fontWeight: 700, color: "#1A1A1A", lineHeight: 1 }}>48</div>
-                <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 9, color: "#9AA89B" }}>/ 73</div>
-              </div>
-            </div>
-            {/* Label */}
-            <div>
-              <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 11, fontWeight: 600, color: "#1A1A1A", marginBottom: 2 }}>Cards</div>
-              <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 11, fontWeight: 600, color: "#1A1A1A", marginBottom: 6 }}>Reviewed</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#7A8C7B" }} />
-                <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 9, color: "#9AA89B" }}>Today</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom-right — Review buttons */}
-          <div className="mc" style={{
-            position: "absolute", bottom: 0, right: 0,
-            width: isTablet ? 145 : 174, height: 130,
-            borderRadius: 16, background: "#1C1C1E",
-            padding: "12px 12px 12px",
-            display: "flex", flexDirection: "column", justifyContent: "space-between",
-          }}>
-            <div style={{ fontFamily: "'Sora',sans-serif", fontSize: 9, color: "#9c9c9c", fontWeight: 500, letterSpacing: ".07em", textTransform: "uppercase" }}>
-              Review
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-              {[
-                { label: "Forgot", time: "1m", bg: "#8B1A1A" },
-                { label: "Hard", time: "10m", bg: "#8B6000" },
-                { label: "Remember", time: "2d", bg: "#1A6B33" },
-              ].map((b) => (
-                <div key={b.label} style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  background: b.bg, borderRadius: 7, padding: "5px 10px",
-                }}>
-                  <span style={{ fontFamily: "'Sora',sans-serif", fontSize: 10, fontWeight: 600, color: "rgba(255,255,255,.9)" }}>
-                    {b.label}
-                  </span>
-                  <span style={{ fontFamily: "'Sora',sans-serif", fontSize: 10, fontWeight: 400, color: "rgba(255,255,255,.5)" }}>
-                    {b.time}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
+        <p className="reveal d2" style={{
+          fontSize: isMobile ? 14 : 16, color: "#707070", lineHeight: 1.8,
+          fontWeight: 300, margin: 0, maxWidth: 520,
+          alignSelf: isTablet ? "flex-start" : "flex-end", paddingBottom: isTablet ? 0 : 6,
+        }}>
+          Here are some of the systems I've built — each shaped by real problems, technical challenges, and a focus on creating meaningful impact for learners and users.
+        </p>
       </div>
 
-      {/* Feature cards */}
-      <div className="fc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
-        {features.map((f, i) => (
-          <div key={i} className={`fc reveal d${i + 1}`}>
-            <div style={{ fontSize: 22, marginBottom: 12 }}>{f.icon}</div>
-            <div style={{ fontSize: 15, fontWeight: 600, color: "#1A1A1A", marginBottom: 6 }}>{f.title}</div>
-            <div style={{ fontSize: 13, color: "#707070", lineHeight: 1.6 }}>{f.desc}</div>
+      {/* ── Project cards ── */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : isTablet ? "1fr 1fr" : "repeat(3, 1fr)",
+        gap: 20,
+        marginBottom: 40,
+      }}>
+        {projects.map((p, i) => (
+          <div key={i} className={`reveal d${i + 1}`} style={{
+            background: "white",
+            borderRadius: 20,
+            border: "1px solid #EDEDEA",
+            overflow: "hidden",
+            display: "flex", flexDirection: "column",
+            boxShadow: "0 2px 12px rgba(0,0,0,.04)",
+            transition: "box-shadow .25s ease, transform .25s ease",
+          }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLDivElement).style.boxShadow = "0 12px 40px rgba(0,0,0,.1)";
+              (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLDivElement).style.boxShadow = "0 2px 12px rgba(0,0,0,.04)";
+              (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+            }}
+          >
+            {/* Visual area */}
+            <div style={{ height: 220, background: "#111", overflow: "hidden", position: "relative", flexShrink: 0 }}>
+
+              {/* Card 1 — composite mockup */}
+              {p.visual === "mockup" && (
+                <>
+                  <img src="/crg-admin-dashboard.png" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top left" }} />
+                  {/* Phone overlay */}
+                  <div style={{
+                    position: "absolute", bottom: -10, right: 20,
+                    width: 90, height: 175,
+                    background: "#161616", borderRadius: 12, padding: 3,
+                    boxShadow: "0 16px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07)",
+                    zIndex: 2,
+                  }}>
+                    <div style={{ position: "absolute", top: 5, left: "50%", transform: "translateX(-50%)", width: 30, height: 8, borderRadius: 4, background: "#000", zIndex: 1 }} />
+                    <div style={{ width: "100%", height: "100%", borderRadius: 9, overflow: "hidden" }}>
+                      <img src="/crg-card-swipe.jpeg" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }} />
+                    </div>
+                  </div>
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, transparent 60%, rgba(0,0,0,.4))" }} />
+                </>
+              )}
+
+              {/* Card 2 — architecture diagram */}
+              {p.visual === "arch" && (
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(145deg,#0F1A10,#1A2B1A)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+                  <svg width="100%" height="100%" viewBox="0 0 320 200" style={{ overflow: "visible" }}>
+                    {/* Grid */}
+                    {[40, 80, 120, 160].map(y => <line key={`h${y}`} x1="0" y1={y} x2="320" y2={y} stroke="#7A8C7B" strokeWidth=".4" opacity=".3" />)}
+                    {[64, 128, 192, 256].map(x => <line key={`v${x}`} x1={x} y1="0" x2={x} y2="200" stroke="#7A8C7B" strokeWidth=".4" opacity=".3" />)}
+                    {/* User */}
+                    <rect x="130" y="8" width="60" height="24" rx="5" fill="rgba(122,140,123,.15)" stroke="#7A8C7B" strokeWidth=".8" />
+                    <text x="160" y="24" textAnchor="middle" fill="#A8C4A8" fontSize="8" fontFamily="Sora,sans-serif">User</text>
+                    {/* Nginx */}
+                    <line x1="160" y1="32" x2="160" y2="50" stroke="#7A8C7B" strokeWidth="1" strokeDasharray="3,2" opacity=".6" />
+                    <rect x="115" y="50" width="90" height="24" rx="5" fill="rgba(122,140,123,.15)" stroke="#7A8C7B" strokeWidth=".8" />
+                    <text x="160" y="66" textAnchor="middle" fill="#A8C4A8" fontSize="8" fontFamily="Sora,sans-serif">Nginx Ingress</text>
+                    {/* Pods row */}
+                    <line x1="135" y1="74" x2="90" y2="94" stroke="#7A8C7B" strokeWidth="1" strokeDasharray="3,2" opacity=".6" />
+                    <line x1="185" y1="74" x2="230" y2="94" stroke="#7A8C7B" strokeWidth="1" strokeDasharray="3,2" opacity=".6" />
+                    <rect x="50" y="94" width="80" height="24" rx="5" fill="rgba(30,80,160,.25)" stroke="#4A80D0" strokeWidth=".8" />
+                    <text x="90" y="110" textAnchor="middle" fill="#88B0F0" fontSize="7.5" fontFamily="Sora,sans-serif">Web (React)</text>
+                    <rect x="190" y="94" width="80" height="24" rx="5" fill="rgba(30,80,160,.25)" stroke="#4A80D0" strokeWidth=".8" />
+                    <text x="230" y="110" textAnchor="middle" fill="#88B0F0" fontSize="7.5" fontFamily="Sora,sans-serif">API (Node.js)</text>
+                    {/* Redis */}
+                    <line x1="230" y1="118" x2="270" y2="138" stroke="#7A8C7B" strokeWidth="1" strokeDasharray="3,2" opacity=".6" />
+                    <rect x="240" y="138" width="70" height="24" rx="5" fill="rgba(180,50,30,.2)" stroke="#C06050" strokeWidth=".8" />
+                    <text x="275" y="154" textAnchor="middle" fill="#E09080" fontSize="7.5" fontFamily="Sora,sans-serif">Redis (Cache)</text>
+                    {/* PostgreSQL */}
+                    <line x1="90" y1="118" x2="130" y2="152" stroke="#7A8C7B" strokeWidth="1" strokeDasharray="3,2" opacity=".6" />
+                    <line x1="230" y1="118" x2="170" y2="152" stroke="#7A8C7B" strokeWidth="1" strokeDasharray="3,2" opacity=".6" />
+                    <rect x="100" y="152" width="120" height="24" rx="5" fill="rgba(122,140,123,.2)" stroke="#7A8C7B" strokeWidth=".8" />
+                    <text x="160" y="168" textAnchor="middle" fill="#A8C4A8" fontSize="7.5" fontFamily="Sora,sans-serif">PostgreSQL (Database)</text>
+                    {/* Monitoring */}
+                    <rect x="8" y="152" width="80" height="24" rx="5" fill="rgba(80,80,80,.2)" stroke="#666" strokeWidth=".8" />
+                    <text x="48" y="168" textAnchor="middle" fill="#999" fontSize="7" fontFamily="Sora,sans-serif">Monitoring</text>
+                    <text x="160" y="196" textAnchor="middle" fill="rgba(122,140,123,.5)" fontSize="7" fontFamily="Sora,sans-serif" letterSpacing="1">KUBERNETES CLUSTER</text>
+                  </svg>
+                </div>
+              )}
+
+              {/* Card 3 — photo */}
+              {p.visual === "photo" && (
+                <img src="/nafiri-ai-workshop.jpeg" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+              )}
+            </div>
+
+            {/* Card body */}
+            <div style={{ padding: "20px 22px 22px", display: "flex", flexDirection: "column", flex: 1 }}>
+
+              {/* Category + title + desc */}
+              <div style={{ fontSize: 10, fontWeight: 600, color: "#7A8C7B", letterSpacing: ".1em", textTransform: "uppercase", marginBottom: 8 }}>
+                {p.category}
+              </div>
+              <div className="df" style={{ fontSize: 20, fontWeight: 600, color: "#1A1A1A", lineHeight: 1.2, marginBottom: 8 }}>
+                {p.title}
+              </div>
+              <p style={{ fontSize: 13, color: "#707070", lineHeight: 1.65, marginBottom: 18, fontWeight: 300 }}>
+                {p.desc}
+              </p>
+
+              {/* Challenge / Solution / Impact */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 18, flex: 1 }}>
+                {[
+                  { label: "The Challenge", icon: "🔧", text: p.challenge },
+                  { label: "My Solution", icon: "💡", text: p.solution },
+                  { label: "The Impact", icon: "🎯", text: p.impact },
+                ].map((col) => (
+                  <div key={col.label}>
+                    <div style={{ fontSize: 10, fontWeight: 600, color: "#1A1A1A", marginBottom: 5, display: "flex", alignItems: "center", gap: 4 }}>
+                      <span style={{ fontSize: 11 }}>{col.icon}</span> {col.label}
+                    </div>
+                    <div style={{ fontSize: 11.5, color: "#888", lineHeight: 1.6 }}>{col.text}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Tags + CTA */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, borderTop: "1px solid #F0F0EC", paddingTop: 14 }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                  {p.tags.map((t) => <span key={t} className="chip" style={{ fontSize: 10 }}>{t}</span>)}
+                </div>
+                <a href="#" style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 12, fontWeight: 500, color: "#7A8C7B", textDecoration: "none", whiteSpace: "nowrap", fontFamily: "'Sora',sans-serif" }}>
+                  View Case Study <ArrowRight size={12} />
+                </a>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-    </section>
+
+      {/* ── GitHub CTA ── */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+        <a
+          href="https://github.com/Leon080306"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 10,
+            border: "1.5px solid #D4D4D0", borderRadius: 100,
+            padding: "14px 32px",
+            fontSize: 14, fontWeight: 500, color: "#1A1A1A",
+            textDecoration: "none", fontFamily: "'Sora',sans-serif",
+            transition: "border-color .2s, background .2s",
+            background: "white",
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "#7A8C7B";
+            (e.currentTarget as HTMLAnchorElement).style.background = "rgba(122,140,123,.05)";
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLAnchorElement).style.borderColor = "#D4D4D0";
+            (e.currentTarget as HTMLAnchorElement).style.background = "white";
+          }}
+        >
+          Explore More Projects on GitHub <ArrowRight size={14} /> <IconGithub />
+        </a>
+        <span style={{ fontSize: 12, color: "#B0B0AC", fontFamily: "'Sora',sans-serif" }}>
+          More projects, experiments, and open source contributions.
+        </span>
+      </div>
+
+    </section >
   );
 }
 
